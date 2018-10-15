@@ -39,7 +39,7 @@ RobotProcess::~RobotProcess()
 
 void RobotProcess::setUp()
 {
-  state_pub = node_handler_robot_process.advertise<droneMsgsROS::AliveSignal>(watchdog_topic, 10);
+  state_pub = node_handler_robot_process.advertise<aerostack_msgs::AliveSignal>(watchdog_topic, 10);
   error_pub = node_handler_robot_process.advertise<droneMsgsROS::ProcessError>(error_topic, 10);
 
   stop_server_srv = node_handler_robot_process.advertiseService(ros::this_node::getName()+"/stop",&RobotProcess::stopSrvCall,this);
