@@ -33,7 +33,7 @@
 #include <std_msgs/String.h>
 #include <aerostack_msgs/AliveSignal.h>
 #include <aerostack_msgs/ProcessState.h>
-#include <droneMsgsROS/ProcessError.h>
+#include <aerostack_msgs/ProcessError.h>
 
 #define STATE_CREATED             aerostack_msgs::ProcessState::Created
 #define STATE_READY_TO_START      aerostack_msgs::ProcessState::ReadyToStart

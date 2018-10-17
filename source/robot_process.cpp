@@ -40,7 +40,7 @@ RobotProcess::~RobotProcess()
 void RobotProcess::setUp()
 {
   state_pub = node_handler_robot_process.advertise<aerostack_msgs::AliveSignal>(watchdog_topic, 10);
-  error_pub = node_handler_robot_process.advertise<droneMsgsROS::ProcessError>(error_topic, 10);
+  error_pub = node_handler_robot_process.advertise<aerostack_msgs::ProcessError>(error_topic, 10);
 
   stop_server_srv = node_handler_robot_process.advertiseService(ros::this_node::getName()+"/stop",&RobotProcess::stopSrvCall,this);
   start_server_srv = node_handler_robot_process.advertiseService(ros::this_node::getName()+"/start",&RobotProcess::startSrvCall,this);
@@ -145,7 +145,7 @@ void RobotProcess::notifyState(State current_state)
 
 void RobotProcess::notifyError(Error type, int reference_code, std::string function, std::string description)
 {
-  droneMsgsROS::ProcessError error_message;
+  aerostack_msgs::ProcessError error_message;
   error_message.header.stamp = ros::Time::now();
   error_message.error_type.value = (int)type;
   error_message.hostname = hostname;
