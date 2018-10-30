@@ -45,18 +45,18 @@
 #include <ros/callback_queue.h>
 #include <std_srvs/Empty.h>
 #include <std_msgs/String.h>
-#include <droneMsgsROS/AliveSignal.h>
-#include <droneMsgsROS/ProcessState.h>
-#include <droneMsgsROS/ProcessError.h>
+#include <aerostack_msgs/AliveSignal.h>
+#include <aerostack_msgs/ProcessState.h>
+#include <aerostack_msgs/ProcessError.h>
 
-#define STATE_CREATED             droneMsgsROS::ProcessState::Created
-#define STATE_READY_TO_START      droneMsgsROS::ProcessState::ReadyToStart
-#define STATE_RUNNING             droneMsgsROS::ProcessState::Running
-#define STATE_PAUSED              droneMsgsROS::ProcessState::Paused
+#define STATE_CREATED             aerostack_msgs::ProcessState::Created
+#define STATE_READY_TO_START      aerostack_msgs::ProcessState::ReadyToStart
+#define STATE_RUNNING             aerostack_msgs::ProcessState::Running
+#define STATE_PAUSED              aerostack_msgs::ProcessState::Paused
 
 
-#define STATE_STARTED             droneMsgsROS::ProcessState::Started
-#define STATE_NOT_STARTED         droneMsgsROS::ProcessState::NotStarted
+#define STATE_STARTED             aerostack_msgs::ProcessState::Started
+#define STATE_NOT_STARTED         aerostack_msgs::ProcessState::NotStarted
 
 
 /*!********************************************************************************************************************
@@ -103,7 +103,7 @@ protected:
   ros::Publisher state_pub;            //!< ROS publisher handler used to send state messages.
   ros::Publisher error_pub;            //!< ROS publisher handler used to send error messages.
 
-  droneMsgsROS::AliveSignal state_message; //!< Message of type state.
+  aerostack_msgs::AliveSignal state_message; //!< Message of type state.
 
 protected:                           //!< These attributes are protected because ProcessMonitor uses them.
   State current_state;               //!< Attribute storing current state of the process.
