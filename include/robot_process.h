@@ -6,7 +6,7 @@
  *  \authors    Enrique Ortiz, Yolanda de la Hoz, Martin Molina, David Palacios,
  *              Alberto Camporredondo
  *  \copyright  Copyright (c) 2018 Universidad Politecnica de Madrid
- * All rights reserved
+ *              All Rights Reserved
  *
  *
  * Redistribution and use in source and binary forms, with or without
