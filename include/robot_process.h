@@ -11,7 +11,7 @@
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
@@ -20,7 +20,7 @@
  * 3. Neither the name of the copyright holder nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -32,7 +32,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  ********************************************************************************/
 
 #ifndef ROBOT_PROCESS
@@ -49,15 +49,13 @@
 #include <aerostack_msgs/ProcessState.h>
 #include <aerostack_msgs/ProcessError.h>
 
-#define STATE_CREATED             aerostack_msgs::ProcessState::Created
-#define STATE_READY_TO_START      aerostack_msgs::ProcessState::ReadyToStart
-#define STATE_RUNNING             aerostack_msgs::ProcessState::Running
-#define STATE_PAUSED              aerostack_msgs::ProcessState::Paused
+#define STATE_CREATED aerostack_msgs::ProcessState::Created
+#define STATE_READY_TO_START aerostack_msgs::ProcessState::ReadyToStart
+#define STATE_RUNNING aerostack_msgs::ProcessState::Running
+#define STATE_PAUSED aerostack_msgs::ProcessState::Paused
 
-
-#define STATE_STARTED             aerostack_msgs::ProcessState::Started
-#define STATE_NOT_STARTED         aerostack_msgs::ProcessState::NotStarted
-
+#define STATE_STARTED aerostack_msgs::ProcessState::Started
+#define STATE_NOT_STARTED aerostack_msgs::ProcessState::NotStarted
 
 /*!********************************************************************************************************************
  *  \class      RobotProcess
@@ -74,7 +72,7 @@
  *********************************************************************************************************************/
 class RobotProcess
 {
-//variables
+  // variables
 public:
   //! States match the values defined in ProcessState.msg
   using State = uint8_t;
@@ -89,29 +87,28 @@ public:
   } Error;
 
 protected:
-  pthread_t t1;                     //!< Thread handler.
+  pthread_t t1;  //!< Thread handler.
 
   ros::NodeHandle node_handler_robot_process;
 
-  std::string watchdog_topic;       //!< Attribute storing topic name to send alive messages to the PerformanceMonitor.
-  std::string error_topic;          //!< Attribute storing topic name to send errors to the PerformanceMonitor.
+  std::string watchdog_topic;  //!< Attribute storing topic name to send alive messages to the PerformanceMonitor.
+  std::string error_topic;     //!< Attribute storing topic name to send errors to the PerformanceMonitor.
 
   ros::ServiceServer start_server_srv;  //!< ROS service handler used to order a process to start.
-  ros::ServiceServer stop_server_srv;  //!< ROS service handler used to order a process to stop.
-  ros::ServiceServer is_running_srv;  //!< ROS service handler used to check if a process is in RUNNING state.
+  ros::ServiceServer stop_server_srv;   //!< ROS service handler used to order a process to stop.
+  ros::ServiceServer is_running_srv;    //!< ROS service handler used to check if a process is in RUNNING state.
 
-  ros::Publisher state_pub;            //!< ROS publisher handler used to send state messages.
-  ros::Publisher error_pub;            //!< ROS publisher handler used to send error messages.
+  ros::Publisher state_pub;  //!< ROS publisher handler used to send state messages.
+  ros::Publisher error_pub;  //!< ROS publisher handler used to send error messages.
 
-  aerostack_msgs::AliveSignal state_message; //!< Message of type state.
+  aerostack_msgs::AliveSignal state_message;  //!< Message of type state.
 
-protected:                           //!< These attributes are protected because ProcessMonitor uses them.
-  State current_state;               //!< Attribute storing current state of the process.
-  std::string drone_id;              //!< Attribute storing the drone on which is executing the process.
-  std::string hostname;              //!< Attribute storing the computer name on which the process is executing.
+protected:               //!< These attributes are protected because ProcessMonitor uses them.
+  State current_state;   //!< Attribute storing current state of the process.
+  std::string drone_id;  //!< Attribute storing the drone on which is executing the process.
+  std::string hostname;  //!< Attribute storing the computer name on which the process is executing.
 
-
-//methods
+  // methods
 public:
   //! Constructor.
   RobotProcess();
@@ -129,13 +126,13 @@ public:
   void stop();
 
   /*!*****************************************************************************************************************
-  * \brief This function calls to ownRun() when the process is Running.
-  * \details This function must be called by the user in ownRun when he is implementing a synchronus execution, when using ros::spinOnce().
-  * Don't use this function if using ros::spin().
-  *******************************************************************************************************************/
+   * \brief This function calls to ownRun() when the process is Running.
+   * \details This function must be called by the user in ownRun when he is implementing a synchronus execution, when
+   *using ros::spinOnce(). Don't use this function if using ros::spin().
+   *******************************************************************************************************************/
   void run();
 
-   /*!*****************************************************************************************************************
+  /*!*****************************************************************************************************************
    * \details If the node has an already defined state (Waiting, Running...) returns
    * the state as an Integer, if not it returns -1 to indicate the current state is undefined.
    * \return Void function
@@ -183,7 +180,7 @@ protected:
    * \brief This function has the purpose to serve as the thread execution point.
    * \param [in] argument Function which has to be executed by the thread.
    *******************************************************************************************************************/
-  static void * threadRun(void * argument);
+  static void* threadRun(void* argument);
 
   //!  This function implements the thread's logic.
   void threadAlgorithm();
@@ -212,27 +209,27 @@ protected:
    * This function is executed in setUp() and it's purpose is to set up all the parameters.
    * the developer considers necesary when needed.
    *******************************************************************************************************************/
-  virtual void ownSetUp()= 0;
+  virtual void ownSetUp() = 0;
 
   /*!******************************************************************************************************************
    * \details All functions starting with 'own' has to be implemented at the derived class.
    * This function is executed in start(), and it's purpose is to connect to all topics and services.
    * Publisher, Subscriber, ServiceServer and ServiceClient definitions should be implemented here.
    *******************************************************************************************************************/
-  virtual void ownStart()=0;
+  virtual void ownStart() = 0;
 
   /*!******************************************************************************************************************
    * \details All functions starting with 'own' has to be implemented at the derived class.
    * This function is executed in stop(), and it's purpose is to shutdown all topics and services.
    * Shutdown must be called for every Publisher, Subscriber, ServiceServer and ServiceClient defined in ownStart
    *******************************************************************************************************************/
-  virtual void ownStop()=0;
+  virtual void ownStop() = 0;
 
   /*!******************************************************************************************************************
    * \details All functions starting with 'own' has to be implemented at the derived class.
    * This function is executed in run(), only if the process is Running.
    * The user should define this function only when implementing a synchronus execution
    *******************************************************************************************************************/
-  virtual void ownRun()=0;
+  virtual void ownRun() = 0;
 };
 #endif
