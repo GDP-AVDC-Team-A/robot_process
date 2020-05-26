@@ -45,9 +45,7 @@
 #include <ros/callback_queue.h>
 #include <std_srvs/Empty.h>
 #include <std_msgs/String.h>
-#include <aerostack_msgs/AliveSignal.h>
 #include <aerostack_msgs/ProcessState.h>
-#include <aerostack_msgs/ProcessError.h>
 
 #define STATE_CREATED aerostack_msgs::ProcessState::Created
 #define STATE_READY_TO_START aerostack_msgs::ProcessState::ReadyToStart
@@ -77,31 +75,12 @@ public:
   //! States match the values defined in ProcessState.msg
   using State = uint8_t;
 
-  //! This enum defines all posible RobotProcess errors that can be sent to the PerformanceMonitor.
-  typedef enum
-  {
-    UnexpectedProcessStop,
-    InvalidInputData,
-    SafeguardRecoverableError,
-    SafeguardFatalError,
-  } Error;
-
 protected:
-  pthread_t t1;  //!< Thread handler.
-
   ros::NodeHandle node_handler_robot_process;
-
-  std::string watchdog_topic;  //!< Attribute storing topic name to send alive messages to the PerformanceMonitor.
-  std::string error_topic;     //!< Attribute storing topic name to send errors to the PerformanceMonitor.
 
   ros::ServiceServer start_server_srv;  //!< ROS service handler used to order a process to start.
   ros::ServiceServer stop_server_srv;   //!< ROS service handler used to order a process to stop.
   ros::ServiceServer is_running_srv;    //!< ROS service handler used to check if a process is in RUNNING state.
-
-  ros::Publisher state_pub;  //!< ROS publisher handler used to send state messages.
-  ros::Publisher error_pub;  //!< ROS publisher handler used to send error messages.
-
-  aerostack_msgs::AliveSignal state_message;  //!< Message of type state.
 
 protected:               //!< These attributes are protected because ProcessMonitor uses them.
   State current_state;   //!< Attribute storing current state of the process.
@@ -147,44 +126,7 @@ public:
    *******************************************************************************************************************/
   void setState(State new_state);
 
-  /*!******************************************************************************************************************
-   * \brief Send a RobotProcess.error to the Processs Monitor
-   * \details This function is a first aproach at error handling. The error comunication between nodes
-   * is performed by a two-part message. The first part indicates the type of message we are sending
-   * (info, warning, error) while the second part offers a detailed description of the problem.
-   * \param [in] type            The type of error we are going to send.
-   * \param [in] reference_code  This is a numeric code that may be usefull during error processing.
-   * \param [in] location        The location is a string that explains at which function the error occured.
-   * \param [in] description     Another String for the human reader that explains in detail the error.
-   *******************************************************************************************************************/
-  void notifyError(Error type, int reference_code, std::string location, std::string description);
-
-  /*!******************************************************************************************************************
-   * \brief The stateToString method transforms the recieved state into a human readable String.
-   * \param [in] state The received state that need to be transformed.
-   * \return the state in a String form.
-   *******************************************************************************************************************/
-  std::string stateToString(State state);
-
 protected:
-  //!  This function sends an alive message to the PerformanceMonitor indicating the current node state.
-  void notifyState();
-
-  /*!******************************************************************************************************************
-   * \brief This function sends an alive message to the PerformanceMonitor indicating the current node state.
-   * \param [in] state State that has to be sent to the PerformanceMonitor.
-   *******************************************************************************************************************/
-  void notifyState(State state);
-
-  /*!******************************************************************************************************************
-   * \brief This function has the purpose to serve as the thread execution point.
-   * \param [in] argument Function which has to be executed by the thread.
-   *******************************************************************************************************************/
-  static void* threadRun(void* argument);
-
-  //!  This function implements the thread's logic.
-  void threadAlgorithm();
-
   /*!******************************************************************************************************************
    * \brief This ROS service set RobotProcess in READY_TO_START state and calls function stop.
    * \details Currently, this service should only be called if the process is running. In the future

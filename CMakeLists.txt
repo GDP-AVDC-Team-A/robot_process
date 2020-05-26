@@ -6,7 +6,7 @@ add_definitions(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
-  droneMsgsROS
+  aerostack_msgs
   std_srvs
 )
 
@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES robot_process
-  CATKIN_DEPENDS roscpp std_msgs droneMsgsROS std_srvs
+  CATKIN_DEPENDS roscpp std_msgs std_srvs aerostack_msgs
 )
 
 ###########
