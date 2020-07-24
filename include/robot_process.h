@@ -45,15 +45,14 @@
 #include <ros/callback_queue.h>
 #include <std_srvs/Empty.h>
 #include <std_msgs/String.h>
-#include <aerostack_msgs/ProcessState.h>
 
-#define STATE_CREATED aerostack_msgs::ProcessState::Created
-#define STATE_READY_TO_START aerostack_msgs::ProcessState::ReadyToStart
-#define STATE_RUNNING aerostack_msgs::ProcessState::Running
-#define STATE_PAUSED aerostack_msgs::ProcessState::Paused
+#define STATE_CREATED 1
+#define STATE_READY_TO_START 2
+#define STATE_RUNNING 3
+#define STATE_PAUSED 4
 
-#define STATE_STARTED aerostack_msgs::ProcessState::Started
-#define STATE_NOT_STARTED aerostack_msgs::ProcessState::NotStarted
+#define STATE_STARTED 7
+#define STATE_NOT_STARTED 8
 
 /*!********************************************************************************************************************
  *  \class      RobotProcess
@@ -72,7 +71,6 @@ class RobotProcess
 {
   // variables
 public:
-  //! States match the values defined in ProcessState.msg
   using State = uint8_t;
 
 protected:
